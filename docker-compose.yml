@@ -1,0 +1,41 @@
+version: "0.1"
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: my_app
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - qdrant
+  #     - redis
+  #   environment:
+  #     QDRANT_HOST: qdrant
+  #     QDRANT_PORT: 6333
+  #     REDIS_HOST: redis
+  #     REDIS_PORT: 6379
+  #   restart: unless-stopped
+
+volumes:
+  qdrant_data:
+  redis_data:
