@@ -1,5 +1,6 @@
 from qdrant_client import QdrantClient
 from qdrant_client.models import PointStruct, VectorParams, Distance
+import os
 
 class InsertData:
     idx: str
@@ -8,7 +9,9 @@ class InsertData:
 
 class QdrantDatabase():
     def __init__(self):
-        self.client = QdrantClient(host="localhost", port=6333)
+        host = os.getenv("QDRANT_HOST", "localhost")
+        port = int(os.getenv("QDRANT_PORT", 6333))
+        self.client = QdrantClient(host=host, port=port)
         self.collection_name = 'policy_data'
         
     def create(self):

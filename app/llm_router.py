@@ -20,10 +20,10 @@ class LLMRouter:
             mode=instructor.Mode.TOOLS
         )
 
-    def route_request(self, request_type: str, **kwargs):
+    def route_request(self, request_type: str, response_model=None, **kwargs):
         """Route the request based on its type."""
         # if request_type == "groq":
-        return self.handle_groq_request(**kwargs)
+        return self.handle_groq_request(response_model=response_model, **kwargs)
         # elif request_type == "whisper":
         #     return self.handle_whisper_request(**kwargs)
         # elif request_type == "deepface":
@@ -31,13 +31,14 @@ class LLMRouter:
         # else:
         #     raise ValueError(f"Unsupported request type: {request_type}")
 
-    def handle_groq_request(self, **kwargs):
+    def handle_groq_request(self, response_model=None, **kwargs):
         """Handle requests for Groq API."""
         # Implement logic to interact with Groq API using self.settings.groq_api_key
+        model = response_model if response_model else QueryAnswer
         response = self.openai_client.chat.completions.create(
             model=self.model,
             messages=[{"role": "user", "content": kwargs.get("prompt", "")}],
-            response_model=QueryAnswer
+            response_model=model
         )
         return response
 

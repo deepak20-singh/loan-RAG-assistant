@@ -31,6 +31,7 @@ class LoanApprovalRequest(BaseModel):
     annual_income: float = Field(..., description="Annual income of the applicant.")
     loan_amount: float = Field(..., description="Amount of loan requested.")
     loan_purpose: str = Field(..., description="Purpose of the loan.")
+    ingest_id: str = Field("", description="The unique identifier for the ingested data to query against.")
 
 class LoanApprovalResponse(BaseModel):
     applicant_name: str = Field(..., description="Name of the loan applicant.")
